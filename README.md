@@ -5,7 +5,7 @@
 
 | Milestone                	| Description                                                                           	| Possible Extensions                                                        	| Target Completion Date 	| Completed?  	|
 |--------------------------	|---------------------------------------------------------------------------------------	|----------------------------------------------------------------------------	|:----------------------:	|:-----------:	|
-| Bare Bones Build         	| Set up the build environment to build for running on bare metal. Create a boot image. 	| None                                                                       	| 02-07                  	|             	|
+| Bare Bones Build         	| Set up the build environment to build for running on bare metal. Create a boot image. 	| None                                                                       	| 02-07                  	| [Notes!](progress_updates/milestone1.md)|
 | VGA Buffers + Testing    	| Write to screen in a VM and create a testing framework                                	| Create a logging system which can be used to report debugging information  	| 02-14                  	|             	|
 | CPU Exceptions           	| Implement the interrupt descriptor table and register preservation                    	| TBD...                                                                     	| 02-21                  	|             	|
 | Double Fault Exceptions  	| Handle double faults! Implement handling errors in errors                             	| TBD...                                                                     	| 02-28                  	|             	|
