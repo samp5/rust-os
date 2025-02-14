@@ -2,9 +2,9 @@
 
 ## A Freestanding Binary
 - The first thing we need to do is remove our dependency on the standard library
-	- This is because we need to implement the system calls ourselves!
+	- This is because many of the standard library functions result in system calls and we need to implement those system calls ourselves!
 - This is done with the attribute `#![no_std]` 
-- When a Rust program panics it unwinds the stack to ensure that all variables are freed and the running program can catch and handle the panic. 
+- Additionally, when a Rust program panics it unwinds the stack to ensure that all variables are freed and the running program can catch and handle the panic. 
 	- This requires some specific libraries, `libunwind` on Linux, that introduce a lot of complexity
 	- We can simply abort on panics with 
 
@@ -58,6 +58,8 @@ rustup target add thumbv7em-none-eabihf
 ```bash
 cargo build --target thumbv7em-none-eabihf
 ```
+
+- This is a just an example bare metal target, we can define our own custom build target as seen below
 
 
 ## The Boot Process
@@ -116,4 +118,29 @@ cargo build --target thumbv7em-none-eabihf
         - this makes sense in the context of a kernel:
             - when the kernel takes over execution it stores register state for the prempted program. 
             - Saving large SIMD registers can lead to performance problems
+
+
+- In addition to building our code for this custom target, we also need to build the core features of Rust to work on this architecture. This can be accomplished by instructing cargo to rebuild `core`, `compiler_builtins`, and `compiler-builtins-mem`.
+
+```toml
+# ./cargo/config.toml
+[unstable]
+build-std-features = ["compiler-builtins-mem"]
+build-std = ["core", "compiler_builtins"]
+```
+
+- Now our kernel will build!
+
+- To enable our compiled kernel to actually run, the executable needs to contain a bootloader to initialize the CPU and start *kernel mode*
+
+- For this, the `bootloader` crate is being used which creates a bootable disk image in `target/x86_64-rustos/debug/bootimage-os.bin`. 
+
+- To automate the run process, we can add the following to our `.carg/config.toml`
+
+```toml
+# ./cargo/config.toml
+
+[target.'cfg(target_os = "none")']
+runner = "bootimage runner"
+```
 
