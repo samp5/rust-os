@@ -4,11 +4,13 @@
  */
 #![no_std]
 #![no_main]
+mod vga_buffer;
 
 use core::panic::PanicInfo;
 
 #[panic_handler]
 pub fn panic(_info: &PanicInfo) -> ! {
+    println!("{}", _info);
     loop {}
 }
 
